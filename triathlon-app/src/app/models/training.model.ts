@@ -5,10 +5,10 @@
 */
 
 export enum Discipline {
-    Zwemmen = 'Zwemmen',
-    Fietsen = 'Fietsen',
-    Lopen = 'Lopen',
-    Krachttraining = 'Krachttraining',
+    Zwemmen = 'zwemmen',
+    Fietsen = 'fietsen',
+    Lopen = 'lopen',
+    Krachttraining = 'krachttraining',
 }
 
 export interface Training {

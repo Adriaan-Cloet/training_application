@@ -1,4 +1,4 @@
-import { Component, ViewChild, viewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
@@ -15,9 +15,10 @@ export class TrainingFormComponent {
 
   disciplines = Object.values(Discipline);
 
-  formData = {
+  private readonly initialFormData = {
     title: '',
     date: '',
+    startTime: '',
     discipline: Discipline.Lopen,
     duration: 0,
     distance: undefined as number | undefined,
@@ -25,10 +26,12 @@ export class TrainingFormComponent {
     notes: '',
   };
 
+  formData = { ...this.initialFormData };
+
   constructor(private trainingService: TrainingService) {}
 
   onSubmit() {
-  this.trainingService.add({ ...this.formData });
-  this.trainingForm.resetForm();
+    this.trainingService.add({ ...this.formData });
+    this.trainingForm.resetForm({ ...this.initialFormData });
   }
 }

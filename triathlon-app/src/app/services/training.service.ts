@@ -1,15 +1,19 @@
-import { Injectable } from "@angular/core";
-import { Training, Discipline } from "../models/training.model";
+import { Injectable, signal } from "@angular/core";
+import { Training } from "../models/training.model";
 
 @Injectable({
     providedIn: 'root',
 })
 export class TrainingService {
     private readonly STORAGE_KEY = 'trainings';
+    private readonly trainingsState = signal<Training[]>(this.readFromStorage());
 
     getAll(): Training[] {
-        const data = localStorage.getItem(this.STORAGE_KEY);
-        return data ? JSON.parse(data) : [];
+        return this.trainingsState();
+    }
+
+    trainings() {
+        return this.trainingsState.asReadonly();
     }
 
     add(training: Omit<Training, 'id'>): Training {
@@ -17,7 +21,7 @@ export class TrainingService {
             ...training, 
             id: crypto.randomUUID(),
         };
-        const all = this.getAll();
+        const all = [...this.getAll()];
         all.push(newTraining);
         this.save(all);
         return newTraining;
@@ -29,7 +33,7 @@ export class TrainingService {
     }
 
     update(id: string, updated: Omit<Training, 'id'>): Training | null {
-        const all = this.getAll();
+        const all = [...this.getAll()];
         const index = all.findIndex((t) => t.id === id);
         if (index === -1) return null;
         all[index] = {...updated, id};
@@ -38,6 +42,12 @@ export class TrainingService {
     }
 
     private save(trainings: Training[]): void {
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(trainings))
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(trainings));
+        this.trainingsState.set(trainings);
+    }
+
+    private readFromStorage(): Training[] {
+        const data = localStorage.getItem(this.STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
     }
 }

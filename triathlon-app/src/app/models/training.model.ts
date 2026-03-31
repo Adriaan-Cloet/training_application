@@ -15,6 +15,7 @@ export interface Training {
     id: string;
     title: string;
     date: string;
+    startTime?: string;
     discipline: Discipline;
     duration: number;
     distance?: number;

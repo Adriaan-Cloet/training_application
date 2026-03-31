@@ -13,6 +13,7 @@ export enum Discipline {
 
 export interface Training {
     id: string;
+    title: string;
     date: string;
     discipline: Discipline;
     duration: number;

@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Discipline, Training } from './models/training.model';
+import { TrainingService } from './services/training.service';
 
 @Component({
   selector: 'app-root',

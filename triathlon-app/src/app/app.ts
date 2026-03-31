@@ -1,15 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Discipline, Training } from './models/training.model';
-import { TrainingService } from './services/training.service';
+import { TrainingFormComponent } from './components/training-form/training-form';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, TrainingFormComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-
 export class App {
   protected readonly title = signal('triathlon-app');
 }

@@ -1,1 +1,100 @@
-<p>training-form works!</p>
+<form (ngSubmit)="onSubmit()" #trainingForm="ngForm" class="max-w-lg mx-auto p-6 bg-white rounded-2xl shadow space-y-5">
+    <h2 class="text-xl font-bold text-gray-800">Training toevoegen</h2>
+
+    <!-- Titel -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Titel</label>
+        <input 
+            type="text"
+            name="title"
+            [(ngModel)]="formData.title"
+            required
+            class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
+            placeholder="bv. Ochtendloop"
+        />
+    </div>
+
+    <!-- Datum -->
+     <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Datum</label>
+    <input
+      type="date"
+      name="date"
+      [(ngModel)]="formData.date"
+      required
+      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <!-- Discipline -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Discipline</label>
+    <select
+      name="discipline"
+      [(ngModel)]="formData.discipline"
+      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
+    >
+      <option *ngFor="let d of disciplines" [value]="d">{{ d }}</option>
+    </select>
+  </div>
+
+  <!-- Duur -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Duur (minuten)</label>
+    <input
+      type="number"
+      name="duration"
+      [(ngModel)]="formData.duration"
+      required
+      min="1"
+      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <!-- Afstand -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Afstand (km, optioneel)</label>
+    <input
+      type="number"
+      name="distance"
+      [(ngModel)]="formData.distance"
+      min="0"
+      step="0.1"
+      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <!-- Gevoel -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Gevoel: {{ formData.feeling }}/10</label>
+    <input
+      type="range"
+      name="feeling"
+      [(ngModel)]="formData.feeling"
+      min="1"
+      max="10"
+      class="w-full accent-blue-500"
+    />
+  </div>
+
+  <!-- Notities -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Notities (optioneel)</label>
+    <textarea
+      name="notes"
+      [(ngModel)]="formData.notes"
+      rows="3"
+      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
+      placeholder="Hoe verliep de training?"
+    ></textarea>
+  </div>
+
+  <!-- Submit -->
+  <button
+    type="submit"
+    [disabled]="trainingForm.invalid"
+    class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+  >
+    Opslaan
+  </button>
+</form>

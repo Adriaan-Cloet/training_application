@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild, viewChild } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
 import { Discipline } from '../../models/training.model';
 
 @Component({
   selector: 'app-training-form',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './training-form.html',
   styleUrl: './training-form.css',
 })
-export class TrainingForm {
+export class TrainingFormComponent {
+  @ViewChild('trainingForm') trainingForm!: NgForm;
+
   disciplines = Object.values(Discipline);
 
   formData = {
@@ -25,21 +28,7 @@ export class TrainingForm {
   constructor(private trainingService: TrainingService) {}
 
   onSubmit() {
-    this.trainingService.add({
-      ...this.formData,
-    });
-    this.resetForm();
-  }
-
-  private resetForm() {
-    this.formData = {
-      title: '',
-      date: '',
-      discipline: Discipline.Lopen,
-      duration: 0,
-      distance: undefined,
-      feeling: 5,
-      notes: '',
-    };
+  this.trainingService.add({ ...this.formData });
+  this.trainingForm.resetForm();
   }
 }

@@ -37,4 +37,4 @@ src/app/
 
 ## Disciplines
 
-Zwemmen, fietsen, lopen.
+Zwemmen, fietsen, lopen & krachttraining.

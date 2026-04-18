@@ -1,0 +1,42 @@
+<div class="max-w-2xl mx-auto">
+  <!-- Niet gevonden -->
+  <div *ngIf="!training" class="text-gray-500 text-sm">
+    Training niet gevonden.
+  </div>
+
+  <!-- Detail -->
+  <div *ngIf="training" class="bg-white rounded-2xl shadow p-6 space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-bold text-gray-800">{{ training.title }}</h2>
+      <a routerLink="/" class="text-sm text-blue-600 hover:underline">← Terug</a>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+      <div>
+        <p class="text-xs text-gray-400 uppercase font-medium">Datum</p>
+        <p>{{ training.date }}</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-400 uppercase font-medium">Discipline</p>
+        <p>{{ training.discipline }}</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-400 uppercase font-medium">Duur</p>
+        <p>{{ training.duration }} min</p>
+      </div>
+      <div *ngIf="training.distance">
+        <p class="text-xs text-gray-400 uppercase font-medium">Afstand</p>
+        <p>{{ training.distance }} km</p>
+      </div>
+      <div *ngIf="training.feeling">
+        <p class="text-xs text-gray-400 uppercase font-medium">Gevoel</p>
+        <p>{{ training.feeling }}/10</p>
+      </div>
+    </div>
+
+    <div *ngIf="training.notes">
+      <p class="text-xs text-gray-400 uppercase font-medium">Notities</p>
+      <p class="text-sm text-gray-600 mt-1">{{ training.notes }}</p>
+    </div>
+  </div>
+</div>

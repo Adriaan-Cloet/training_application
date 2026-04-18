@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
 import { Training } from '../../models/training.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-training-list',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './training-list.html',
   styleUrl: './training-list.css',
 })

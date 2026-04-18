@@ -8,21 +8,21 @@
 
   <!-- Lijst -->
   <ul *ngIf="trainings.length > 0" class="space-y-3">
-    <li *ngFor="let training of trainings" class="bg-white rounded-2xl shadow p-4 flex justify-between items-start">
-      <div class="space-y-1">
-        <p class="font-semibold text-gray-800">{{ training.title }}</p>
-        <p class="text-sm text-gray-500">{{ training.date }} — {{ training.discipline }}</p>
-        <p class="text-sm text-gray-600">{{ training.duration }} min
-          <span *ngIf="training.distance"> · {{ training.distance }} km</span>
-          <span *ngIf="training.feeling"> · gevoel: {{ training.feeling }}/10</span>
-        </p>
-      </div>
-      <button
-        (click)="delete(training.id)"
-        class="text-red-500 hover:text-red-700 text-sm font-medium ml-4"
-      >
-        Verwijderen
-      </button>
-    </li>
-  </ul>
+  <li *ngFor="let training of trainings" class="bg-white rounded-2xl shadow p-4 flex justify-between items-start">
+    <a [routerLink]="['/training', training.id]" class="flex-1 space-y-1 hover:opacity-70 transition">
+      <p class="font-semibold text-gray-800">{{ training.title }}</p>
+      <p class="text-sm text-gray-500">{{ training.date }} — {{ training.discipline }}</p>
+      <p class="text-sm text-gray-600">{{ training.duration }} min
+        <span *ngIf="training.distance"> · {{ training.distance }} km</span>
+        <span *ngIf="training.feeling"> · gevoel: {{ training.feeling }}/10</span>
+      </p>
+    </a>
+    <button
+      (click)="delete(training.id)"
+      class="text-red-500 hover:text-red-700 text-sm font-medium ml-4"
+    >
+      Verwijderen
+    </button>
+  </li>
+</ul>
 </div>

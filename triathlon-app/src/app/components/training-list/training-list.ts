@@ -1,6 +1,7 @@
-import { Component, computed } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
+import { Training } from '../../models/training.model';
 
 @Component({
   selector: 'app-training-list',
@@ -8,21 +9,23 @@ import { TrainingService } from '../../services/training.service';
   templateUrl: './training-list.html',
   styleUrl: './training-list.css',
 })
-export class TrainingList {
-  readonly trainings = computed(() => {
-    return [...this.trainingService.trainings()()].sort((a, b) => {
-      return this.getTrainingTimestamp(b.date, b.startTime) - this.getTrainingTimestamp(a.date, a.startTime);
-    });
-  });
+export class TrainingListComponent implements OnInit {
+  trainings: Training[] = [];
 
   constructor(private trainingService: TrainingService) {}
 
-  delete(id: string) {
-    this.trainingService.delete(id);
+  ngOnInit() {
+    this.load();
   }
 
-  private getTrainingTimestamp(date: string, startTime?: string): number {
-    const time = startTime && startTime.trim() !== '' ? startTime : '00:00';
-    return new Date(`${date}T${time}`).getTime();
+  load() {
+    this.trainings = this.trainingService.getAll().sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+  }
+
+  delete(id: string) {
+    this.trainingService.delete(id);
+    this.load();
   }
 }

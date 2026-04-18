@@ -9,7 +9,7 @@ import { Training } from '../../models/training.model';
   templateUrl: './training-list.html',
   styleUrl: './training-list.css',
 })
-export class TrainingList implements OnInit {
+export class TrainingListComponent implements OnInit {
   trainings: Training[] = [];
 
   constructor(private trainingService: TrainingService) {}

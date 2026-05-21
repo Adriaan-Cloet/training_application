@@ -1,1 +1,10 @@
+# JetBrains / WebStorm
 .idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# OS files
+.DS_Store
+Thumbs.db

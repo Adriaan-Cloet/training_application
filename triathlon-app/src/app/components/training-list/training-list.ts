@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
-import { Training } from '../../models/training.model';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,23 +9,17 @@ import { RouterLink } from '@angular/router';
   templateUrl: './training-list.html',
   styleUrl: './training-list.css',
 })
-export class TrainingListComponent implements OnInit {
-  trainings: Training[] = [];
+export class TrainingListComponent {
+  trainings = computed(() =>
+    this.trainingService
+      .trainings()()
+      .slice()
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+  );
 
   constructor(private trainingService: TrainingService) {}
 
-  ngOnInit() {
-    this.load();
-  }
-
-  load() {
-    this.trainings = this.trainingService.getAll().sort((a, b) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-  }
-
   delete(id: string) {
     this.trainingService.delete(id);
-    this.load();
   }
 }

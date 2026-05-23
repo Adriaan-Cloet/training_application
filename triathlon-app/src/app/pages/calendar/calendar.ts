@@ -1,0 +1,129 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { Training } from '../../models/training.model';
+import { TrainingService } from '../../services/training.service';
+import { FlattenPipe } from '../../pipes/flatten-pipe';
+
+@Component({
+  selector: 'app-calendar',
+  imports: [CommonModule, RouterLink, FlattenPipe],
+  templateUrl: './calendar.html',
+  styleUrl: './calendar.css',
+})
+export class CalendarComponent implements OnInit {
+  today = new Date();
+  currentYear = this.today.getFullYear();
+  currentMonth = this.today.getMonth();
+
+  selectedDay: number | null = null;
+  trainingsOnSelectedDay: Training[] = [];
+
+  weeks: (number | null)[][] = [];
+  trainingsPerDay: Map<number, Training[]> = new Map();
+
+  monthNames = [
+    'Januari',
+    'Februari',
+    'Maart',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Augustus',
+    'September',
+    'Oktober',
+    'November',
+    'December',
+  ];
+
+  dayNames = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+
+  disciplineColors: Record<string, string> = {
+    zwemmen: 'bg-blue-100 text-blue-800 border-blue-200',
+    lopen: 'bg-red-100 text-red-800 border-red-200',
+    fietsen: 'bg-green-100 text-green-800 border-green-200',
+    krachttraining: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+  };
+
+  disciplineIcons: Record<string, string> = {
+    zwemmen: '🏊',
+    lopen: '🏃',
+    fietsen: '🚴',
+    krachttraining: '🏋️',
+  };
+
+  constructor(private trainingService: TrainingService, private router: Router) {}
+
+  ngOnInit() {
+    this.buildCalendar();
+  }
+
+  buildCalendar() {
+    this.selectedDay = null;
+    this.trainingsOnSelectedDay = [];
+    this.trainingsPerDay = new Map();
+
+    const allTrainings = this.trainingService.getAll();
+    allTrainings.forEach(t => {
+      const date = new Date(t.date);
+      if (date.getFullYear() === this.currentYear && date.getMonth() === this.currentMonth) {
+        const day = date.getDate();
+        if (!this.trainingsPerDay.has(day)) this.trainingsPerDay.set(day, []);
+        this.trainingsPerDay.get(day)!.push(t);
+      }
+    });
+
+    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+
+    // maandag = 0, zondag = 6
+    let startDow = firstDay.getDay() - 1;
+    if (startDow < 0) startDow = 6;
+
+    this.weeks = [];
+    let week: (number | null)[] = Array(startDow).fill(null);
+
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+      week.push(d);
+      if (week.length === 7) {
+        this.weeks.push(week);
+        week = [];
+      }
+    }
+    if (week.length > 0) {
+      while (week.length < 7) week.push(null);
+      this.weeks.push(week);
+    }
+  }
+
+  selectDay(day: number | null) {
+    if (!day) return;
+    this.selectedDay = day;
+    this.trainingsOnSelectedDay = this.trainingsPerDay.get(day) ?? [];
+  }
+
+  prevMonth() {
+    if (this.currentMonth === 0) {
+      this.currentMonth = 11;
+      this.currentYear--;
+    } else {
+      this.currentMonth--;
+    }
+    this.buildCalendar();
+  }
+
+  nextMonth() {
+    if (this.currentMonth === 11) {
+      this.currentMonth = 0;
+      this.currentYear++;
+    } else {
+      this.currentMonth++;
+    }
+    this.buildCalendar();
+  }
+
+  goToTraining(id: string) {
+    this.router.navigate(['/training/' + id]);
+  }
+}

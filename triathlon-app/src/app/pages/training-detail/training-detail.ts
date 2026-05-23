@@ -48,4 +48,8 @@ export class TrainingDetailComponent implements OnInit {
     this.isEditing = false;
   }
 
+  goBack() {
+    history.back();
+  }
+
 }

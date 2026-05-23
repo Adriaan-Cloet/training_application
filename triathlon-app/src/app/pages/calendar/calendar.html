@@ -1,0 +1,69 @@
+<div class="max-w-2xl mx-auto space-y-6">
+
+  <!-- Terug knop -->
+  <div>
+    <a routerLink="/" class="text-sm text-blue-600 hover:underline">← Terug</a>
+  </div>
+
+  <!-- Kalender -->
+  <div class="bg-white rounded-2xl shadow p-6">
+
+    <!-- Header: maand navigatie -->
+    <div class="flex items-center justify-between mb-4">
+      <button (click)="prevMonth()" class="text-gray-500 hover:text-gray-800 text-xl px-2">‹</button>
+      <h2 class="text-lg font-bold text-gray-800">{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
+      <button (click)="nextMonth()" class="text-gray-500 hover:text-gray-800 text-xl px-2">›</button>
+    </div>
+
+    <!-- Dagnamen -->
+    <div class="grid grid-cols-7 mb-2">
+      <div *ngFor="let d of dayNames" class="text-center text-xs font-medium text-gray-400 py-1">{{ d }}</div>
+    </div>
+
+    <!-- Dagen -->
+    <div class="grid grid-cols-7 gap-1">
+      <div
+        *ngFor="let day of weeks | flatten"
+        (click)="selectDay(day)"
+        [class]="day
+          ? 'cursor-pointer rounded-xl p-1 text-center min-h-[56px] flex flex-col items-center transition ' +
+            (selectedDay === day ? 'bg-blue-50 ring-2 ring-blue-400' : 'hover:bg-gray-50')
+          : 'min-h-[56px]'"
+      >
+        <span *ngIf="day" class="text-sm font-medium text-gray-700">{{ day }}</span>
+        <div *ngIf="day" class="flex flex-wrap justify-center gap-0.5 mt-0.5">
+          <span *ngFor="let t of trainingsPerDay.get(day) ?? []" class="text-xs">
+            {{ disciplineIcons[t.discipline] }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trainingen van geselecteerde dag -->
+  <div *ngIf="selectedDay && trainingsOnSelectedDay.length > 0" class="space-y-3">
+    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+      {{ selectedDay }} {{ monthNames[currentMonth] }}
+    </h3>
+    <div
+      *ngFor="let t of trainingsOnSelectedDay"
+      (click)="goToTraining(t.id)"
+      [class]="'cursor-pointer rounded-xl border p-4 flex items-center justify-between transition hover:shadow-sm ' + disciplineColors[t.discipline]"
+    >
+      <div class="flex items-center gap-3">
+        <span class="text-xl">{{ disciplineIcons[t.discipline] }}</span>
+        <div>
+          <p class="font-semibold text-sm">{{ t.title }}</p>
+          <p class="text-xs opacity-70">{{ t.startTime }} · {{ t.duration }} min<span *ngIf="t.distance"> · {{ t.distance }} km</span></p>
+        </div>
+      </div>
+      <span class="text-xs opacity-50">›</span>
+    </div>
+  </div>
+
+  <!-- Geen trainingen op geselecteerde dag -->
+  <div *ngIf="selectedDay && trainingsOnSelectedDay.length === 0" class="text-sm text-gray-400 text-center">
+    Geen trainingen op {{ selectedDay }} {{ monthNames[currentMonth] }}.
+  </div>
+
+</div>

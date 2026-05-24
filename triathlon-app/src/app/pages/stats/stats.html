@@ -1,0 +1,68 @@
+<div class="max-w-3xl mx-auto space-y-6">
+
+  <!-- Terug -->
+  <div>
+    <button (click)="goBack()" class="text-sm text-blue-600 hover:underline">← Terug</button>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow p-6 space-y-6">
+    <h2 class="text-xl font-bold text-gray-800">Statistieken</h2>
+
+    <!-- Periode filter -->
+    <div class="flex flex-wrap gap-2">
+      <button
+        *ngFor="let p of periodes"
+        (click)="setPeriode(p.value)"
+        [class]="'px-3 py-1 rounded-full text-sm font-medium transition ' +
+          (periode === p.value ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200')"
+      >
+        {{ p.label }}
+      </button>
+    </div>
+
+    <!-- Eenheid filter -->
+    <div class="flex gap-2">
+      <button
+        (click)="setEenheid('minuten')"
+        [class]="'px-3 py-1 rounded-full text-sm font-medium transition ' +
+          (eenheid === 'minuten' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200')"
+      >
+        Minuten
+      </button>
+      <button
+        (click)="setEenheid('kilometers')"
+        [class]="'px-3 py-1 rounded-full text-sm font-medium transition ' +
+          (eenheid === 'kilometers' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200')"
+      >
+        Kilometers
+      </button>
+    </div>
+
+    <!-- Krachttraining toggle -->
+    <div class="flex items-center gap-3">
+      <button
+        (click)="toggleKracht()"
+        [class]="'px-3 py-1 rounded-full text-sm font-medium transition ' +
+          (krachttrainingIncluded ? 'bg-yellow-400 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200')"
+      >
+        🏋️ Krachttraining
+      </button>
+      <span class="text-xs text-gray-400">{{ krachttrainingIncluded ? 'Inbegrepen' : 'Uitgesloten' }}</span>
+    </div>
+
+    <!-- Grafiek -->
+    <div *ngIf="chartData.datasets.length > 0">
+      <canvas baseChart
+              [data]="chartData"
+              [options]="chartOptions"
+              type="bar">
+      </canvas>
+    </div>
+
+    <!-- Geen data -->
+    <div *ngIf="chartData.datasets.length === 0 || chartData.labels?.length === 0" class="text-sm text-gray-400 text-center py-8">
+      Geen trainingen gevonden voor deze periode.
+    </div>
+
+  </div>
+</div>

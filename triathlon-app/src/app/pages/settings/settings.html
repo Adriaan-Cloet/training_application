@@ -1,6 +1,7 @@
 <div class="max-w-lg mx-auto space-y-6">
   <h1 class="text-2xl font-bold text-gray-800">Instellingen</h1>
 
+  <!-- Doelrace -->
   <div class="bg-white rounded-xl shadow p-6 space-y-4">
     <h2 class="text-lg font-semibold text-gray-700">Doelrace</h2>
 
@@ -42,23 +43,102 @@
       />
       <label for="countdownToggle" class="text-sm font-medium text-gray-600">Afteller tonen op homepagina</label>
     </div>
+
+    <div class="flex items-center gap-4">
+      <button
+        (click)="onSubmitRace()"
+        class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+      >
+        Opslaan
+      </button>
+      @if (opgeslagen) {
+        <span class="text-green-600 text-sm font-medium">✓ Instellingen opgeslagen</span>
+      }
+    </div>
   </div>
 
-  <div class="flex items-center gap-4">
-    <button
-      (click)="onSubmit()"
-      class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
-    >
-      Opslaan
-    </button>
-    @if (opgeslagen) {
-      <span class="text-green-600 text-sm font-medium">✓ Instellingen opgeslagen</span>
+  <!-- Wachtwoord wijzigen -->
+  <div class="bg-white rounded-xl shadow p-6 space-y-4">
+    <h2 class="text-lg font-semibold text-gray-700">Wachtwoord wijzigen</h2>
+
+    <div class="space-y-1">
+      <label class="block text-sm font-medium text-gray-600">Nieuw wachtwoord</label>
+      <input
+        type="password"
+        [(ngModel)]="newPassword"
+        placeholder="Minimaal 6 tekens"
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="space-y-1">
+      <label class="block text-sm font-medium text-gray-600">Bevestig wachtwoord</label>
+      <input
+        type="password"
+        [(ngModel)]="confirmPassword"
+        placeholder="Herhaal nieuw wachtwoord"
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    @if (passwordError) {
+      <p class="text-red-500 text-sm">{{ passwordError }}</p>
     }
-    <a
-    routerLink="/"
-    class="text-sm text-gray-500 hover:text-gray-700 transition-colors"
-    >
-    ← Terug naar home
-    </a>
+
+    <div class="flex items-center gap-4">
+      <button
+        (click)="onSubmitPassword()"
+        class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+      >
+        Wachtwoord wijzigen
+      </button>
+      @if (passwordOpgeslagen) {
+        <span class="text-green-600 text-sm font-medium">✓ Wachtwoord gewijzigd</span>
+      }
+    </div>
   </div>
+
+  <!-- Account -->
+  <div class="bg-white rounded-xl shadow p-6 space-y-4">
+    <h2 class="text-lg font-semibold text-gray-700">Account</h2>
+
+    <button
+      (click)="onSignOut()"
+      class="w-full border border-gray-300 text-gray-700 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition"
+    >
+      Uitloggen
+    </button>
+
+    <div class="border-t pt-4 space-y-3">
+      <p class="text-sm font-medium text-red-600">Account verwijderen</p>
+      <p class="text-xs text-gray-500">
+        Dit verwijdert je account en alle bijhorende data permanent. Typ
+        <span class="font-mono font-semibold text-gray-700">{{ DELETE_PHRASE }}</span>
+        om te bevestigen.
+      </p>
+      <input
+        type="text"
+        [(ngModel)]="deleteConfirmText"
+        placeholder="Typ de bevestigingszin"
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+      />
+      <button
+        (click)="onDeleteAccount()"
+        [disabled]="!canDelete || isDeleting"
+        class="w-full bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        @if (isDeleting) {
+          Verwijderen...
+        } @else {
+          Account permanent verwijderen
+        }
+      </button>
+    </div>
+  </div>
+  <a
+  routerLink="/"
+  class="inline-block text-sm text-gray-500 hover:text-gray-700 transition-colors"
+  >
+  ← Terug naar home
+  </a>
 </div>

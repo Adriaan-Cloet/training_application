@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { SupabaseService } from './supabase.service';
 
 @Injectable({
@@ -26,5 +25,13 @@ export class AuthService {
 
   getCurrentUser() {
     return this.supabaseService.supabase.auth.getUser();
+  }
+
+  async updatePassword(newPassword: string) {
+    return this.supabaseService.supabase.auth.updateUser({ password: newPassword });
+  }
+
+  async deleteAccount() {
+    return this.supabaseService.supabase.rpc('delete_user_account');
   }
 }

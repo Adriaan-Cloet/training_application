@@ -1,53 +1,91 @@
-import { Injectable, signal } from "@angular/core";
-import { Training } from "../models/training.model";
+import { Injectable, signal } from '@angular/core';
+import { Training } from '../models/training.model';
+import { SupabaseService } from './supabase.service';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class TrainingService {
-    private readonly STORAGE_KEY = 'trainings';
-    private readonly trainingsState = signal<Training[]>(this.readFromStorage());
+  private readonly trainingsState = signal<Training[]>([]);
 
-    getAll(): Training[] {
-        return this.trainingsState();
+  constructor(private supabaseService: SupabaseService) {}
+
+  trainings() {
+    return this.trainingsState.asReadonly();
+  }
+
+  private async getCurrentUserId(): Promise<string> {
+    const { data } = await this.supabaseService.supabase.auth.getUser();
+    return data.user!.id;
+  }
+
+  async loadAll(): Promise<void> {
+    const { data, error } = await this.supabaseService.supabase
+      .from('trainingen')
+      .select('*')
+      .order('date', { ascending: false });
+
+    if (error) {
+      console.error('Fout bij het laden van trainingen:', error);
+      return;
     }
 
-    trainings() {
-        return this.trainingsState.asReadonly();
+    this.trainingsState.set((data as any[]).map((row) => this.toTraining(row)));
+  }
+
+  async add(training: Omit<Training, 'id'>): Promise<Training | null> {
+    const userId = await this.getCurrentUserId();
+    const { data, error } = await this.supabaseService.supabase
+      .from('trainingen')
+      .insert([this.toRow(training, userId)])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Fout bij het toevoegen van training:', error);
+      return null;
     }
 
-    add(training: Omit<Training, 'id'>): Training {
-        const newTraining: Training = {
-            ...training, 
-            id: crypto.randomUUID(),
-        };
-        const all = [...this.getAll()];
-        all.push(newTraining);
-        this.save(all);
-        return newTraining;
+    await this.loadAll();
+    return this.toTraining(data);
+  }
+
+  async delete(id: string): Promise<void> {
+    const { error } = await this.supabaseService.supabase.from('trainingen').delete().eq('id', id);
+
+    if (error) {
+      console.error('Fout bij het verwijderen van training:', error);
+      return;
     }
 
-    delete(id: string):void {
-        const filtered = this.getAll().filter((t) => t.id !== id);
-        this.save(filtered);
+    await this.loadAll();
+  }
+
+  async update(id: string, updated: Omit<Training, 'id'>): Promise<Training | null> {
+    const userId = await this.getCurrentUserId();
+    const { data, error } = await this.supabaseService.supabase
+      .from('trainingen')
+      .update(this.toRow(updated, userId))
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Fout bij het bijwerken van training:', error);
+      return null;
     }
 
-    update(id: string, updated: Omit<Training, 'id'>): Training | null {
-        const all = [...this.getAll()];
-        const index = all.findIndex((t) => t.id === id);
-        if (index === -1) return null;
-        all[index] = {...updated, id};
-        this.save(all);
-        return all[index];
-    }
+    await this.loadAll();
+    return this.toTraining(data);
+  }
 
-    private save(trainings: Training[]): void {
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(trainings));
-        this.trainingsState.set(trainings);
-    }
+  private toRow(training: Omit<Training, 'id'>, userId: string): any {
+    const { startTime, ...rest } = training;
+    return { ...rest, start_time: startTime, user_id: userId };
+  }
 
-    private readFromStorage(): Training[] {
-        const data = localStorage.getItem(this.STORAGE_KEY);
-        return data ? JSON.parse(data) : [];
-    }
+  private toTraining(row: any): Training {
+    const { start_time, ...rest } = row;
+    return { ...rest, startTime: start_time };
+  }
 }

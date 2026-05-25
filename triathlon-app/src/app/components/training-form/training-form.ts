@@ -30,8 +30,8 @@ export class TrainingFormComponent {
 
   constructor(private trainingService: TrainingService) {}
 
-  onSubmit() {
-    this.trainingService.add({ ...this.formData });
+  async onSubmit() {
+    await this.trainingService.add({ ...this.formData });
     this.trainingForm.resetForm({ ...this.initialFormData });
   }
 }

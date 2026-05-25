@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Training } from '../../models/training.model';
@@ -53,10 +53,16 @@ export class CalendarComponent implements OnInit {
     krachttraining: '🏋️',
   };
 
-  constructor(private trainingService: TrainingService, private router: Router) {}
+  constructor(
+    private trainingService: TrainingService,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.trainingService.loadAll();
     this.buildCalendar();
+    this.cdr.detectChanges();
   }
 
   buildCalendar() {
@@ -64,8 +70,8 @@ export class CalendarComponent implements OnInit {
     this.trainingsOnSelectedDay = [];
     this.trainingsPerDay = new Map();
 
-    const allTrainings = this.trainingService.getAll();
-    allTrainings.forEach(t => {
+    const allTrainings = this.trainingService.trainings()();
+    allTrainings.forEach((t: Training) => {
       const date = new Date(t.date);
       if (date.getFullYear() === this.currentYear && date.getMonth() === this.currentMonth) {
         const day = date.getDate();
@@ -77,7 +83,6 @@ export class CalendarComponent implements OnInit {
     const firstDay = new Date(this.currentYear, this.currentMonth, 1);
     const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
 
-    // maandag = 0, zondag = 6
     let startDow = firstDay.getDay() - 1;
     if (startDow < 0) startDow = 6;
 

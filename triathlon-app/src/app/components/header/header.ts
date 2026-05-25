@@ -1,4 +1,6 @@
   import { Component } from '@angular/core';
+  import { AuthService } from '../../services/auth.service';
+  import { Router } from '@angular/router';
 
   @Component({
     selector: 'app-header',
@@ -6,4 +8,11 @@
     templateUrl: './header.html',
     styleUrl: './header.css',
   })
-  export class HeaderComponent {}
+  export class HeaderComponent {
+    constructor(private authService: AuthService, private router: Router) {}
+
+    async onSignOut() {
+      await this.authService.signOut();
+      this.router.navigate(['/auth']);
+    }
+  }

@@ -19,7 +19,7 @@ export class TrainingListComponent {
 
   constructor(private trainingService: TrainingService) {}
 
-  delete(id: string) {
-    this.trainingService.delete(id);
+  async delete(id: string) {
+    await this.trainingService.delete(id);
   }
 }

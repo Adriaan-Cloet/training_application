@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
@@ -19,14 +19,18 @@ export class TrainingDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private trainingService: TrainingService
+    private trainingService: TrainingService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      const found = this.trainingService.getAll().find(t => t.id === id);
+      await this.trainingService.loadAll();
+      const all = this.trainingService.trainings()();
+      const found = all.find((t) => t.id === id);
       this.training = found ?? null;
+      this.cdr.detectChanges();
     }
   }
 
@@ -37,9 +41,9 @@ export class TrainingDetailComponent implements OnInit {
     this.isEditing = true;
   }
 
-  saveEdit() {
+  async saveEdit() {
     if (!this.training) return;
-    const updated = this.trainingService.update(this.training.id, this.editData);
+    const updated = await this.trainingService.update(this.training.id, this.editData);
     if (updated) this.training = updated;
     this.isEditing = false;
   }
@@ -51,5 +55,4 @@ export class TrainingDetailComponent implements OnInit {
   goBack() {
     history.back();
   }
-
 }

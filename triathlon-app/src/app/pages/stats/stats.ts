@@ -81,7 +81,8 @@ export class StatsComponent implements OnInit {
 
   constructor(private trainingService: TrainingService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.trainingService.loadAll();
     this.buildChart();
   }
 
@@ -101,7 +102,7 @@ export class StatsComponent implements OnInit {
   }
 
   private getFilteredTrainings(): Training[] {
-    const all = this.trainingService.getAll();
+    const all = this.trainingService.trainings()();
     const now = new Date();
     let from: Date;
 
@@ -126,7 +127,7 @@ export class StatsComponent implements OnInit {
         return all;
     }
 
-    return all.filter((t) => new Date(t.date) >= from);
+    return all.filter((t: Training) => new Date(t.date) >= from);
   }
 
   private buildChart() {

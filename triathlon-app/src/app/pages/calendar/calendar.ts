@@ -66,8 +66,6 @@ export class CalendarComponent implements OnInit {
   }
 
   buildCalendar() {
-    this.selectedDay = null;
-    this.trainingsOnSelectedDay = [];
     this.trainingsPerDay = new Map();
 
     const allTrainings = this.trainingService.trainings()();
@@ -99,6 +97,16 @@ export class CalendarComponent implements OnInit {
     if (week.length > 0) {
       while (week.length < 7) week.push(null);
       this.weeks.push(week);
+    }
+
+    if (
+      this.currentYear === this.today.getFullYear() &&
+      this.currentMonth === this.today.getMonth()
+    ) {
+      this.selectDay(this.today.getDate());
+    } else {
+      this.selectedDay = null;
+      this.trainingsOnSelectedDay = [];
     }
   }
 

@@ -1,18 +1,21 @@
-  import { Component } from '@angular/core';
-  import { AuthService } from '../../services/auth.service';
-  import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router, RouterLink } from '@angular/router';
 
-  @Component({
-    selector: 'app-header',
-    imports: [],
-    templateUrl: './header.html',
-    styleUrl: './header.css',
-  })
-  export class HeaderComponent {
-    constructor(private authService: AuthService, private router: Router) {}
+@Component({
+  selector: 'app-header',
+  imports: [RouterLink],
+  templateUrl: './header.html',
+  styleUrl: './header.css',
+})
+export class HeaderComponent {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
-    async onSignOut() {
-      await this.authService.signOut();
-      this.router.navigate(['/auth']);
-    }
+  async onSignOut() {
+    await this.authService.signOut();
+    this.router.navigate(['/auth']);
   }
+}

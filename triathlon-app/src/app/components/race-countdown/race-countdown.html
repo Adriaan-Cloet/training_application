@@ -1,0 +1,39 @@
+@if (settings?.countdownEnabled) {
+  <div class="bg-white rounded-xl shadow p-5 space-y-4">
+    @if (!settings?.raceDate || !settings?.raceName) {
+      <p class="text-sm text-gray-500">
+        Nog geen race ingesteld.
+        <a routerLink="/instellingen" class="text-blue-600 hover:underline">Stel je doelrace in</a>.
+      </p>
+    } @else if (!countdown) {
+      <p class="text-sm text-gray-500">Je race is al geweest. Goed gedaan! 🎉</p>
+    } @else {
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide">Doelrace</p>
+          <h2 class="text-lg font-bold text-gray-800">{{ settings?.raceName }}</h2>
+        </div>
+        <div class="text-right">
+          <p class="text-3xl font-extrabold text-blue-600">
+            {{ countdown.weeks }}<span class="text-lg font-semibold text-gray-500">w</span>
+            {{ countdown.days }}<span class="text-lg font-semibold text-gray-500">d</span>
+          </p>
+          <p class="text-xs text-gray-400">nog {{ countdown.totalDays }} dagen</p>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <div class="flex justify-between text-xs text-gray-400">
+          <span>Voorbereiding</span>
+          <span>{{ progressPercent }}%</span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-2.5">
+          <div
+            class="bg-blue-600 h-2.5 rounded-full transition-all"
+            [style.width.%]="progressPercent"
+          ></div>
+        </div>
+      </div>
+    }
+  </div>
+}

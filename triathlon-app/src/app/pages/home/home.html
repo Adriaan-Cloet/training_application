@@ -1,5 +1,7 @@
 <div class="max-w-5xl mx-auto space-y-6">
-  <div class="flex justify-end">
+  <app-race-countdown />
+
+  <div class="flex justify-end gap-2">
     <a routerLink="/calendar" class="bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition">
       Kalender
     </a>
@@ -7,6 +9,7 @@
       Statistieken
     </a>
   </div>
+
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <app-training-form />
     <app-training-list />

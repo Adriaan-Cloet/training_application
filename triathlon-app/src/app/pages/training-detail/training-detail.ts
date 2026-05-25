@@ -1,21 +1,28 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
 import { Discipline, Training } from '../../models/training.model';
 import { FormsModule } from '@angular/forms';
+import { PageHeaderComponent } from '../../components/page-header/page-header';
 
 @Component({
   selector: 'app-training-detail',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, FormsModule, PageHeaderComponent],
   templateUrl: './training-detail.html',
-  styleUrl: './training-detail.css',
 })
 export class TrainingDetailComponent implements OnInit {
   training: Training | null = null;
   isEditing = false;
   editData!: Omit<Training, 'id'>;
   disciplines = Object.values(Discipline);
+
+  disciplineMeta: Record<Discipline, { icon: string; accent: string }> = {
+    [Discipline.Zwemmen]: { icon: '🏊', accent: 'text-sky-300' },
+    [Discipline.Fietsen]: { icon: '🚴', accent: 'text-emerald-300' },
+    [Discipline.Lopen]: { icon: '🏃', accent: 'text-rose-300' },
+    [Discipline.Krachttraining]: { icon: '🏋️', accent: 'text-amber-300' },
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +41,19 @@ export class TrainingDetailComponent implements OnInit {
     }
   }
 
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('nl-BE', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
+
+  selectDiscipline(d: Discipline) {
+    if (this.editData) this.editData.discipline = d;
+  }
+
   startEdit() {
     if (!this.training) return;
     const { id, ...rest } = this.training;
@@ -50,9 +70,5 @@ export class TrainingDetailComponent implements OnInit {
 
   cancelEdit() {
     this.isEditing = false;
-  }
-
-  goBack() {
-    history.back();
   }
 }

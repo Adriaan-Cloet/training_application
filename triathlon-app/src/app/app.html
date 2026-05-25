@@ -1,5 +1,8 @@
-<app-header />
-
-<main class="min-h-screen bg-gray-100 px-4 py-8">
-  <router-outlet />
-</main>
+<div class="app-shell">
+  <main class="app-main" [class.app-main--with-nav]="showBottomNav()">
+    <router-outlet />
+  </main>
+  @if (showBottomNav()) {
+    <app-bottom-nav />
+  }
+</div>

@@ -1,9 +1,13 @@
 {
-  "name": "triathlon-app",
-  "short_name": "triathlon-app",
+  "name": "70.3 Training",
+  "short_name": "70.3",
+  "description": "Persoonlijke Ironman 70.3 training tracker",
   "display": "standalone",
+  "orientation": "portrait",
   "scope": "./",
   "start_url": "./",
+  "theme_color": "#0b1220",
+  "background_color": "#0b1220",
   "icons": [
     {
       "src": "icons/icon-72x72.png",

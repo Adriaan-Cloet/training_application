@@ -1,112 +1,118 @@
-<form (ngSubmit)="onSubmit()" #trainingForm="ngForm" class="max-w-lg mx-auto p-6 bg-white rounded-2xl shadow space-y-5">
-    <h2 class="text-xl font-bold text-gray-800">Training toevoegen</h2>
+<form (ngSubmit)="onSubmit()" #trainingForm="ngForm" class="space-y-5 pb-6">
+  <div>
+    <label class="field-label" for="title">Titel</label>
+    <input
+      id="title"
+      type="text"
+      name="title"
+      [(ngModel)]="formData.title"
+      required
+      class="field-input"
+      placeholder="bv. Ochtendloop"
+    />
+  </div>
 
-    <!-- Titel -->
+  <div class="grid grid-cols-2 gap-3">
     <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Titel</label>
-        <input
-            type="text"
-            name="title"
-            [(ngModel)]="formData.title"
-            required
-            class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
-            placeholder="bv. Ochtendloop"
-        />
+      <label class="field-label" for="date">Datum</label>
+      <input
+        id="date"
+        type="date"
+        name="date"
+        [(ngModel)]="formData.date"
+        required
+        class="field-input"
+      />
     </div>
-
-    <!-- Datum -->
-     <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Datum</label>
-    <input
-      type="date"
-      name="date"
-      [(ngModel)]="formData.date"
-      required
-      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
-    />
+    <div>
+      <label class="field-label" for="startTime">Startuur</label>
+      <input
+        id="startTime"
+        type="time"
+        name="startTime"
+        [(ngModel)]="formData.startTime"
+        required
+        class="field-input"
+      />
+    </div>
   </div>
 
-  <!-- Startuur -->
   <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Startuur (24u)</label>
-    <input
-      type="time"
-      name="startTime"
-      [(ngModel)]="formData.startTime"
-      required
-      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
-    />
+    <span class="field-label">Discipline</span>
+    <div class="grid grid-cols-2 gap-2">
+      @for (d of disciplines; track d) {
+        <button
+          type="button"
+          (click)="selectDiscipline(d)"
+          [class]="
+            'flex min-h-12 items-center justify-center gap-2 rounded-xl border text-sm font-semibold transition active:scale-[0.98] ' +
+            (formData.discipline === d
+              ? disciplineMeta[d].activeClass
+              : 'border-app-border bg-app-surface text-app-muted')
+          "
+        >
+          <span aria-hidden="true">{{ disciplineMeta[d].icon }}</span>
+          {{ disciplineMeta[d].label }}
+        </button>
+      }
+    </div>
+    <input type="hidden" name="discipline" [(ngModel)]="formData.discipline" required />
   </div>
 
-  <!-- Discipline -->
-  <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Discipline</label>
-    <select
-      name="discipline"
-      [(ngModel)]="formData.discipline"
-      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
-    >
-      <option *ngFor="let d of disciplines" [value]="d">{{ d }}</option>
-    </select>
+  <div class="grid grid-cols-2 gap-3">
+    <div>
+      <label class="field-label" for="duration">Duur (min)</label>
+      <input
+        id="duration"
+        type="number"
+        name="duration"
+        [(ngModel)]="formData.duration"
+        required
+        min="1"
+        class="field-input"
+      />
+    </div>
+    <div>
+      <label class="field-label" for="distance">Afstand (km)</label>
+      <input
+        id="distance"
+        type="number"
+        name="distance"
+        [(ngModel)]="formData.distance"
+        min="0"
+        step="0.1"
+        class="field-input"
+        placeholder="Optioneel"
+      />
+    </div>
   </div>
 
-  <!-- Duur -->
-  <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Duur (minuten)</label>
+  <div class="card">
+    <label class="field-label" for="feeling">Gevoel — {{ formData.feeling }}/10</label>
     <input
-      type="number"
-      name="duration"
-      [(ngModel)]="formData.duration"
-      required
-      min="1"
-      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
-    />
-  </div>
-
-  <!-- Afstand -->
-  <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Afstand (km, optioneel)</label>
-    <input
-      type="number"
-      name="distance"
-      [(ngModel)]="formData.distance"
-      min="0"
-      step="0.1"
-      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
-    />
-  </div>
-
-  <!-- Gevoel -->
-  <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Gevoel: {{ formData.feeling }}/10</label>
-    <input
+      id="feeling"
       type="range"
       name="feeling"
       [(ngModel)]="formData.feeling"
       min="1"
       max="10"
-      class="w-full accent-blue-500"
+      class="mt-2 w-full accent-app-accent"
     />
   </div>
 
-  <!-- Notities -->
   <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Notities (optioneel)</label>
+    <label class="field-label" for="notes">Notities</label>
     <textarea
+      id="notes"
       name="notes"
       [(ngModel)]="formData.notes"
       rows="3"
-      class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500"
+      class="field-input min-h-[5.5rem] resize-none py-3"
       placeholder="Hoe verliep de training?"
     ></textarea>
   </div>
 
-  <!-- Submit -->
-  <button
-    type="submit"
-    [disabled]="trainingForm.invalid"
-    class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
-  >
-    Opslaan
+  <button type="submit" [disabled]="trainingForm.invalid" class="btn-primary">
+    Training opslaan
   </button>
 </form>

@@ -1,26 +1,47 @@
-<div class="max-w-lg mx-auto mt-8">
-  <h2 class="text-xl font-bold text-gray-800 mb-4">Mijn trainingen</h2>
-
-  <p *ngIf="trainings().length === 0" class="text-gray-500 text-sm">
-    Nog geen trainingen ingelogd.
-  </p>
-
-  <ul *ngIf="trainings().length > 0" class="space-y-3">
-    <li *ngFor="let training of trainings()" class="bg-white rounded-2xl shadow p-4 flex justify-between items-start">
-      <a [routerLink]="['/training', training.id]" class="flex-1 space-y-1 hover:opacity-70 transition">
-        <p class="font-semibold text-gray-800">{{ training.title }}</p>
-        <p class="text-sm text-gray-500">{{ training.date }} — {{ training.discipline }}</p>
-        <p class="text-sm text-gray-600">{{ training.duration }} min
-          <span *ngIf="training.distance"> · {{ training.distance }} km</span>
-          <span *ngIf="training.feeling"> · gevoel: {{ training.feeling }}/10</span>
-        </p>
-      </a>
-      <button
-        (click)="delete(training.id)"
-        class="text-red-500 hover:text-red-700 text-sm font-medium ml-4"
-      >
-        Verwijderen
-      </button>
-    </li>
+@if (trainings().length === 0) {
+  <div class="card text-center py-10">
+    <p class="text-4xl mb-3" aria-hidden="true">🏊‍♂️</p>
+    <p class="font-medium text-app-text">Nog geen trainingen</p>
+    <p class="mt-1 text-sm text-app-muted">Tik op + om je eerste sessie te loggen.</p>
+  </div>
+} @else {
+  <ul class="space-y-2">
+    @for (training of trainings(); track training.id) {
+      <li>
+        <a [routerLink]="['/training', training.id]" class="list-row">
+          <span
+            [class]="
+              'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-xl ' +
+              disciplineAccent[training.discipline]
+            "
+            aria-hidden="true"
+          >
+            {{ disciplineIcons[training.discipline] }}
+          </span>
+          <span class="min-w-0 flex-1">
+            <p class="truncate font-semibold text-app-text">{{ training.title }}</p>
+            <p class="truncate text-sm text-app-muted">
+              {{ formatDate(training.date) }}
+              @if (training.duration) {
+                · {{ training.duration }} min
+              }
+              @if (training.distance) {
+                · {{ training.distance }} km
+              }
+            </p>
+          </span>
+          <button
+            type="button"
+            (click)="delete(training.id, $event)"
+            class="btn-ghost shrink-0 text-rose-400"
+            aria-label="Verwijderen"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        </a>
+      </li>
+    }
   </ul>
-</div>
+}

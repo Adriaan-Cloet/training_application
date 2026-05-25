@@ -66,15 +66,25 @@ export class StatsComponent implements OnInit {
 
   chartOptions: ChartOptions<'bar'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top' },
+      legend: {
+        position: 'top',
+        labels: { color: '#8b9cb8', boxWidth: 12, padding: 16 },
+      },
       tooltip: { mode: 'index', intersect: false },
     },
     scales: {
-      x: { stacked: false },
+      x: {
+        stacked: false,
+        ticks: { color: '#8b9cb8', maxRotation: 45, minRotation: 0 },
+        grid: { color: 'rgba(42, 54, 84, 0.5)' },
+      },
       y: {
         beginAtZero: true,
-        title: { display: true, text: 'Minuten' },
+        ticks: { color: '#8b9cb8' },
+        grid: { color: 'rgba(42, 54, 84, 0.5)' },
+        title: { display: true, text: 'Minuten', color: '#8b9cb8' },
       },
     },
   };
@@ -196,7 +206,4 @@ export class StatsComponent implements OnInit {
     return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   }
 
-  goBack() {
-    history.back();
-  }
 }

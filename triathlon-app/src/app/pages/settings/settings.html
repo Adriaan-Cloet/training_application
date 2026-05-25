@@ -1,144 +1,124 @@
-<div class="max-w-lg mx-auto space-y-6">
-  <h1 class="text-2xl font-bold text-gray-800">Instellingen</h1>
+<div class="page">
+  <header class="mb-5">
+    <p class="section-title">Profiel</p>
+    <h1 class="text-2xl font-bold text-app-text">Instellingen</h1>
+  </header>
 
-  <!-- Doelrace -->
-  <div class="bg-white rounded-xl shadow p-6 space-y-4">
-    <h2 class="text-lg font-semibold text-gray-700">Doelrace</h2>
+  <section class="mb-6 space-y-3">
+    <h2 class="section-title px-1">Doelrace</h2>
+    <div class="card space-y-4">
+      <div>
+        <label class="field-label" for="raceName">Racenaam</label>
+        <input
+          id="raceName"
+          type="text"
+          [(ngModel)]="raceName"
+          placeholder="Ironman 70.3 Knokke-Heist"
+          class="field-input"
+        />
+      </div>
 
-    <div class="space-y-1">
-      <label class="block text-sm font-medium text-gray-600">Racenaam</label>
-      <input
-        type="text"
-        [(ngModel)]="raceName"
-        placeholder="bv. Ironman 70.3 Knokke-Heist"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
+      <div>
+        <label class="field-label" for="raceDate">Racedatum</label>
+        <input id="raceDate" type="date" [(ngModel)]="raceDate" class="field-input" />
+      </div>
 
-    <div class="space-y-1">
-      <label class="block text-sm font-medium text-gray-600">Racedatum</label>
-      <input
-        type="date"
-        [(ngModel)]="raceDate"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
+      <div>
+        <label class="field-label" for="trainingStartDate">Start voorbereiding</label>
+        <input
+          id="trainingStartDate"
+          type="date"
+          [(ngModel)]="trainingStartDate"
+          class="field-input"
+        />
+        <p class="mt-1.5 text-xs text-app-muted">Voor de voortgangsbalk op home.</p>
+      </div>
 
-    <div class="space-y-1">
-      <label class="block text-sm font-medium text-gray-600">Startdatum voorbereiding</label>
-      <input
-        type="date"
-        [(ngModel)]="trainingStartDate"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <p class="text-xs text-gray-400">Wordt gebruikt voor de voortgangsbalk op de homepagina.</p>
-    </div>
+      <label class="flex min-h-12 items-center gap-3 rounded-xl border border-app-border bg-app-bg px-4">
+        <input
+          type="checkbox"
+          id="countdownToggle"
+          [(ngModel)]="countdownEnabled"
+          class="h-5 w-5 rounded accent-app-accent"
+        />
+        <span class="text-sm font-medium text-app-text">Afteller op home tonen</span>
+      </label>
 
-    <div class="flex items-center gap-3">
-      <input
-        type="checkbox"
-        id="countdownToggle"
-        [(ngModel)]="countdownEnabled"
-        class="w-4 h-4 accent-blue-600"
-      />
-      <label for="countdownToggle" class="text-sm font-medium text-gray-600">Afteller tonen op homepagina</label>
-    </div>
-
-    <div class="flex items-center gap-4">
-      <button
-        (click)="onSubmitRace()"
-        class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
-      >
-        Opslaan
-      </button>
+      <button type="button" (click)="onSubmitRace()" class="btn-primary">Opslaan</button>
       @if (opgeslagen) {
-        <span class="text-green-600 text-sm font-medium">✓ Instellingen opgeslagen</span>
+        <p class="text-center text-sm font-medium text-emerald-400">Instellingen opgeslagen</p>
       }
     </div>
-  </div>
+  </section>
 
-  <!-- Wachtwoord wijzigen -->
-  <div class="bg-white rounded-xl shadow p-6 space-y-4">
-    <h2 class="text-lg font-semibold text-gray-700">Wachtwoord wijzigen</h2>
+  <section class="mb-6 space-y-3">
+    <h2 class="section-title px-1">Beveiliging</h2>
+    <div class="card space-y-4">
+      <div>
+        <label class="field-label" for="newPassword">Nieuw wachtwoord</label>
+        <input
+          id="newPassword"
+          type="password"
+          [(ngModel)]="newPassword"
+          placeholder="Minimaal 6 tekens"
+          class="field-input"
+        />
+      </div>
 
-    <div class="space-y-1">
-      <label class="block text-sm font-medium text-gray-600">Nieuw wachtwoord</label>
-      <input
-        type="password"
-        [(ngModel)]="newPassword"
-        placeholder="Minimaal 6 tekens"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
+      <div>
+        <label class="field-label" for="confirmPassword">Bevestig wachtwoord</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          [(ngModel)]="confirmPassword"
+          placeholder="Herhaal wachtwoord"
+          class="field-input"
+        />
+      </div>
 
-    <div class="space-y-1">
-      <label class="block text-sm font-medium text-gray-600">Bevestig wachtwoord</label>
-      <input
-        type="password"
-        [(ngModel)]="confirmPassword"
-        placeholder="Herhaal nieuw wachtwoord"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
+      @if (passwordError) {
+        <p class="text-sm text-rose-400">{{ passwordError }}</p>
+      }
 
-    @if (passwordError) {
-      <p class="text-red-500 text-sm">{{ passwordError }}</p>
-    }
-
-    <div class="flex items-center gap-4">
-      <button
-        (click)="onSubmitPassword()"
-        class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
-      >
+      <button type="button" (click)="onSubmitPassword()" class="btn-primary">
         Wachtwoord wijzigen
       </button>
       @if (passwordOpgeslagen) {
-        <span class="text-green-600 text-sm font-medium">✓ Wachtwoord gewijzigd</span>
+        <p class="text-center text-sm font-medium text-emerald-400">Wachtwoord gewijzigd</p>
       }
     </div>
-  </div>
+  </section>
 
-  <!-- Account -->
-  <div class="bg-white rounded-xl shadow p-6 space-y-4">
-    <h2 class="text-lg font-semibold text-gray-700">Account</h2>
+  <section class="space-y-3">
+    <h2 class="section-title px-1">Account</h2>
+    <div class="card space-y-4">
+      <button type="button" (click)="onSignOut()" class="btn-secondary">Uitloggen</button>
 
-    <button
-      (click)="onSignOut()"
-      class="w-full border border-gray-300 text-gray-700 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition"
-    >
-      Uitloggen
-    </button>
-
-    <div class="border-t pt-4 space-y-3">
-      <p class="text-sm font-medium text-red-600">Account verwijderen</p>
-      <p class="text-xs text-gray-500">
-        Dit verwijdert je account en alle bijhorende data permanent. Typ
-        <span class="font-mono font-semibold text-gray-700">{{ DELETE_PHRASE }}</span>
-        om te bevestigen.
-      </p>
-      <input
-        type="text"
-        [(ngModel)]="deleteConfirmText"
-        placeholder="Typ de bevestigingszin"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
-      />
-      <button
-        (click)="onDeleteAccount()"
-        [disabled]="!canDelete || isDeleting"
-        class="w-full bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
-      >
-        @if (isDeleting) {
-          Verwijderen...
-        } @else {
-          Account permanent verwijderen
-        }
-      </button>
+      <div class="rounded-xl border border-rose-500/30 bg-rose-500/5 p-4 space-y-3">
+        <p class="text-sm font-semibold text-rose-300">Account verwijderen</p>
+        <p class="text-xs text-app-muted">
+          Permanent. Typ
+          <span class="font-mono font-semibold text-app-text">{{ DELETE_PHRASE }}</span>
+        </p>
+        <input
+          type="text"
+          [(ngModel)]="deleteConfirmText"
+          placeholder="Bevestigingszin"
+          class="field-input border-rose-500/40 focus:ring-rose-400/30"
+        />
+        <button
+          type="button"
+          (click)="onDeleteAccount()"
+          [disabled]="!canDelete || isDeleting"
+          class="flex min-h-12 w-full items-center justify-center rounded-xl bg-rose-600 px-4 text-base font-semibold text-white transition active:scale-[0.98] disabled:opacity-40"
+        >
+          @if (isDeleting) {
+            Verwijderen...
+          } @else {
+            Account permanent verwijderen
+          }
+        </button>
+      </div>
     </div>
-  </div>
-  <a
-  routerLink="/"
-  class="inline-block text-sm text-gray-500 hover:text-gray-700 transition-colors"
-  >
-  ← Terug naar home
-  </a>
+  </section>
 </div>

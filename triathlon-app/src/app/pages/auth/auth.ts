@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
   selector: 'app-auth',
   imports: [FormsModule],
   templateUrl: './auth.html',
-  styleUrl: './auth.css',
 })
 export class Auth {
   email = '';

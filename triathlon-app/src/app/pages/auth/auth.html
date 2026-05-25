@@ -1,39 +1,55 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-950">
-  <div class="bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md">
-    <h1 class="text-2xl font-bold text-white mb-6">
-      {{ isLogin ? 'Inloggen' : 'Registreren' }}
-    </h1>
+<div
+  class="flex min-h-dvh flex-col justify-center px-6"
+  style="padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom)"
+>
+  <div class="mx-auto w-full max-w-sm">
+    <div class="mb-10 text-center">
+      <div
+        class="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-app-accent/15 text-4xl"
+        aria-hidden="true"
+      >
+        🏊
+      </div>
+      <h1 class="text-2xl font-bold text-app-text">70.3 Training</h1>
+      <p class="mt-1 text-sm text-app-muted">Persoonlijke race-voorbereiding</p>
+    </div>
 
-    <div class="flex flex-col gap-4">
-      <input
-        type="email"
-        [(ngModel)]="email"
-        placeholder="E-mailadres"
-        class="bg-gray-800 text-white rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="password"
-        [(ngModel)]="password"
-        placeholder="Wachtwoord"
-        class="bg-gray-800 text-white rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-      />
+    <div class="card-elevated space-y-4">
+      <h2 class="text-lg font-bold text-app-text">
+        {{ isLogin ? 'Welkom terug' : 'Account aanmaken' }}
+      </h2>
+
+      <div class="space-y-3">
+        <input
+          type="email"
+          [(ngModel)]="email"
+          placeholder="E-mailadres"
+          autocomplete="email"
+          class="field-input"
+        />
+        <input
+          type="password"
+          [(ngModel)]="password"
+          placeholder="Wachtwoord"
+          [attr.autocomplete]="isLogin ? 'current-password' : 'new-password'"
+          class="field-input"
+        />
+      </div>
 
       @if (errorMessage) {
-        <p class="text-red-400 text-sm">{{ errorMessage }}</p>
+        <p class="text-sm text-rose-400">{{ errorMessage }}</p>
       }
 
-      <button
-        (click)="onSubmit()"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors"
-      >
+      <button type="button" (click)="onSubmit()" class="btn-primary">
         {{ isLogin ? 'Inloggen' : 'Registreren' }}
       </button>
 
       <button
+        type="button"
         (click)="toggleMode()"
-        class="text-gray-400 hover:text-white text-sm transition-colors"
+        class="w-full py-2 text-center text-sm text-app-muted transition active:text-app-text"
       >
-        {{ isLogin ? 'Nog geen account? Registreer je hier.' : 'Al een account? Log hier in.' }}
+        {{ isLogin ? 'Nog geen account? Registreer' : 'Al een account? Log in' }}
       </button>
     </div>
   </div>

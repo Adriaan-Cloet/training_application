@@ -1,4 +1,116 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
 @plugin "@tailwindcss/forms";
+
+@theme {
+  --color-app-bg: #0b1220;
+  --color-app-surface: #151d2e;
+  --color-app-surface-elevated: #1c2740;
+  --color-app-border: #2a3654;
+  --color-app-muted: #8b9cb8;
+  --color-app-text: #e8edf5;
+  --color-app-accent: #38bdf8;
+  --color-app-accent-pressed: #0ea5e9;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+@layer base {
+  html {
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-app-bg text-app-text font-sans antialiased;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply text-base;
+  }
+}
+
+@layer components {
+  .app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    max-height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .app-main {
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-main--with-nav {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .page {
+    padding: calc(0.75rem + env(safe-area-inset-top, 0px)) 1rem 1.25rem;
+    max-width: 28rem;
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .page--flush-top {
+    padding-top: calc(0.5rem + env(safe-area-inset-top, 0px));
+  }
+
+  .card {
+    @apply rounded-2xl border border-app-border bg-app-surface p-4;
+  }
+
+  .card-elevated {
+    @apply rounded-2xl border border-app-border bg-app-surface-elevated p-4 shadow-lg shadow-black/20;
+  }
+
+  .btn-primary {
+    @apply flex min-h-12 w-full items-center justify-center rounded-xl bg-app-accent px-4 text-base font-semibold text-slate-950 transition active:scale-[0.98] active:bg-app-accent-pressed disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .btn-secondary {
+    @apply flex min-h-12 w-full items-center justify-center rounded-xl border border-app-border bg-app-surface-elevated px-4 text-base font-semibold text-app-text transition active:scale-[0.98] active:bg-app-surface disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .btn-ghost {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-app-muted transition active:bg-app-surface active:text-app-text;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-app-muted;
+  }
+
+  .field-input {
+    @apply w-full min-h-12 rounded-xl border border-app-border bg-app-bg px-4 text-app-text placeholder:text-app-muted/60 focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/30;
+  }
+
+  .chip {
+    @apply inline-flex min-h-10 items-center justify-center rounded-full border border-app-border px-4 text-sm font-medium text-app-muted transition;
+  }
+
+  .chip--active {
+    @apply border-app-accent bg-app-accent/15 text-app-accent;
+  }
+
+  .section-title {
+    @apply text-xs font-semibold uppercase tracking-wider text-app-muted;
+  }
+
+  .list-row {
+    @apply flex min-h-[4.5rem] items-center gap-3 rounded-2xl border border-app-border bg-app-surface px-4 py-3 transition active:bg-app-surface-elevated;
+  }
+}

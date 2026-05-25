@@ -1,17 +1,27 @@
-<div class="max-w-5xl mx-auto space-y-6">
-  <app-race-countdown />
+<div class="page relative pb-4">
+  <header class="mb-5">
+    <p class="section-title">Vandaag</p>
+    <h1 class="text-2xl font-bold tracking-tight text-app-text">70.3 Training</h1>
+    <p class="text-sm text-app-muted">Knokke-Heist 2027</p>
+  </header>
 
-  <div class="flex justify-end gap-2">
-    <a routerLink="/calendar" class="bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition">
-      Kalender
-    </a>
-    <a routerLink="/stats" class="bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition">
-      Statistieken
-    </a>
+  <div class="mb-6">
+    <app-race-countdown />
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    <app-training-form />
+  <section>
+    <div class="mb-3 flex items-center justify-between">
+      <h2 class="section-title">Recente trainingen</h2>
+    </div>
     <app-training-list />
-  </div>
+  </section>
+
+  <a
+    routerLink="/log"
+    class="fixed right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-app-accent text-2xl font-bold text-slate-950 shadow-lg shadow-sky-500/30 transition active:scale-95"
+    style="bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px))"
+    aria-label="Training loggen"
+  >
+    +
+  </a>
 </div>

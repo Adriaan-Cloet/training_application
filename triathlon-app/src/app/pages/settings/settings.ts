@@ -7,7 +7,7 @@ import { RaceSettings } from '../../models/race-settings.model';
 
 @Component({
   selector: 'app-settings',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })

@@ -1,0 +1,16 @@
+<header
+  class="sticky top-0 z-40 -mx-4 mb-4 flex items-center gap-2 border-b border-app-border/60 bg-app-bg/90 px-4 py-3 backdrop-blur-md"
+  style="margin-top: calc(-1 * (0.75rem + env(safe-area-inset-top, 0px))); padding-top: calc(0.75rem + env(safe-area-inset-top, 0px))"
+>
+  <button type="button" (click)="goBack()" class="btn-ghost shrink-0" aria-label="Terug">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6" />
+    </svg>
+  </button>
+  <div class="min-w-0 flex-1">
+    <h1 class="truncate text-lg font-bold text-app-text">{{ title() }}</h1>
+    @if (subtitle()) {
+      <p class="truncate text-xs text-app-muted">{{ subtitle() }}</p>
+    }
+  </div>
+</header>

@@ -7,7 +7,7 @@ import { FlattenPipe } from '../../pipes/flatten-pipe';
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, RouterLink, FlattenPipe],
+  imports: [CommonModule, FlattenPipe],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
 })
@@ -40,10 +40,10 @@ export class CalendarComponent implements OnInit {
   dayNames = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
 
   disciplineColors: Record<string, string> = {
-    zwemmen: 'bg-blue-100 text-blue-800 border-blue-200',
-    lopen: 'bg-red-100 text-red-800 border-red-200',
-    fietsen: 'bg-green-100 text-green-800 border-green-200',
-    krachttraining: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+    zwemmen: 'border-sky-400/30 bg-sky-400/10 text-sky-200',
+    lopen: 'border-rose-400/30 bg-rose-400/10 text-rose-200',
+    fietsen: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-200',
+    krachttraining: 'border-amber-400/30 bg-amber-400/10 text-amber-200',
   };
 
   disciplineIcons: Record<string, string> = {

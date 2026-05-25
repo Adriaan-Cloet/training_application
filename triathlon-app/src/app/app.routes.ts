@@ -6,11 +6,17 @@ import { StatsComponent } from './pages/stats/stats';
 import { Auth } from './pages/auth/auth';
 import { authGuard } from './guards/auth-guard';
 import { Settings } from './pages/settings/settings';
+import { LogPage } from './pages/log/log';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'log',
+    component: LogPage,
     canActivate: [authGuard],
   },
   {

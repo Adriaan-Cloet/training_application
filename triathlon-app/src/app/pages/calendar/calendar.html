@@ -1,71 +1,83 @@
-<div class="max-w-2xl mx-auto space-y-6">
+<div class="page">
+  <header class="mb-5">
+    <p class="section-title">Planning</p>
+    <h1 class="text-2xl font-bold text-app-text">Kalender</h1>
+  </header>
 
-  <!-- Terug knop -->
-  <div>
-    <a routerLink="/" class="text-sm text-blue-600 hover:underline">← Terug</a>
-  </div>
-
-  <!-- Kalender -->
-  <div class="bg-white rounded-2xl shadow p-6">
-
-    <!-- Header: maand navigatie -->
-    <div class="flex items-center justify-between mb-4">
-      <button (click)="prevMonth()" class="text-gray-500 hover:text-gray-800 text-xl px-2">‹</button>
-      <h2 class="text-lg font-bold text-gray-800">{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
-      <button (click)="nextMonth()" class="text-gray-500 hover:text-gray-800 text-xl px-2">›</button>
+  <div class="card mb-4">
+    <div class="mb-4 flex items-center justify-between">
+      <button type="button" (click)="prevMonth()" class="btn-ghost" aria-label="Vorige maand">‹</button>
+      <h2 class="text-base font-bold text-app-text">{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
+      <button type="button" (click)="nextMonth()" class="btn-ghost" aria-label="Volgende maand">›</button>
     </div>
 
-    <!-- Dagnamen -->
-    <div class="grid grid-cols-7 mb-2">
-      <div *ngFor="let d of dayNames" class="text-center text-xs font-medium text-gray-400 py-1">{{ d }}</div>
+    <div class="mb-2 grid grid-cols-7">
+      @for (d of dayNames; track d) {
+        <div class="py-1 text-center text-[0.65rem] font-semibold uppercase text-app-muted">{{ d }}</div>
+      }
     </div>
 
-    <!-- Dagen -->
     <div class="grid grid-cols-7 gap-1">
-      <div
-        *ngFor="let day of weeks | flatten"
-        (click)="selectDay(day)"
-        [class]="day
-          ? 'cursor-pointer rounded-xl p-1 text-center min-h-[56px] flex flex-col items-center transition ' +
-            (selectedDay === day ? 'bg-blue-50 ring-2 ring-blue-400' :
-            (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) ? 'bg-blue-100 hover:bg-blue-200' :
-            'hover:bg-gray-50')
-          : 'min-h-[56px]'"
+      @for (day of weeks | flatten; track $index) {
+        <button
+          type="button"
+          (click)="selectDay(day)"
+          [disabled]="!day"
+          [class]="
+            day
+              ? 'flex min-h-[3rem] flex-col items-center rounded-xl p-1 transition active:scale-95 ' +
+                (selectedDay === day
+                  ? 'bg-app-accent/20 ring-2 ring-app-accent'
+                  : day === today.getDate() &&
+                      currentMonth === today.getMonth() &&
+                      currentYear === today.getFullYear()
+                    ? 'bg-app-surface-elevated'
+                    : 'bg-transparent')
+              : 'min-h-[3rem] cursor-default opacity-0'
+          "
         >
-        <span *ngIf="day" class="text-sm font-medium text-gray-700">{{ day }}</span>
-        <div *ngIf="day" class="flex flex-wrap justify-center gap-0.5 mt-0.5">
-          <span *ngFor="let t of trainingsPerDay.get(day) ?? []" class="text-xs">
-            {{ disciplineIcons[t.discipline] }}
-          </span>
-        </div>
-      </div>
+          @if (day) {
+            <span class="text-sm font-semibold text-app-text">{{ day }}</span>
+            <span class="mt-0.5 flex flex-wrap justify-center gap-px text-[0.6rem] leading-none">
+              @for (t of trainingsPerDay.get(day) ?? []; track t.id) {
+                <span aria-hidden="true">{{ disciplineIcons[t.discipline] }}</span>
+              }
+            </span>
+          }
+        </button>
+      }
     </div>
   </div>
 
-  <!-- Trainingen van geselecteerde dag -->
-  <div *ngIf="selectedDay && trainingsOnSelectedDay.length > 0" class="space-y-3">
-    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-      {{ selectedDay }} {{ monthNames[currentMonth] }}
-    </h3>
-    <div
-      *ngFor="let t of trainingsOnSelectedDay"
-      (click)="goToTraining(t.id)"
-      [class]="'cursor-pointer rounded-xl border p-4 flex items-center justify-between transition hover:shadow-sm ' + disciplineColors[t.discipline]"
-    >
-      <div class="flex items-center gap-3">
-        <span class="text-xl">{{ disciplineIcons[t.discipline] }}</span>
-        <div>
-          <p class="font-semibold text-sm">{{ t.title }}</p>
-          <p class="text-xs opacity-70">{{ t.startTime }} · {{ t.duration }} min<span *ngIf="t.distance"> · {{ t.distance }} km</span></p>
-        </div>
-      </div>
-      <span class="text-xs opacity-50">›</span>
-    </div>
-  </div>
+  @if (selectedDay) {
+    <section class="space-y-2">
+      <h3 class="section-title">
+        {{ selectedDay }} {{ monthNames[currentMonth] }}
+      </h3>
 
-  <!-- Geen trainingen op geselecteerde dag -->
-  <div *ngIf="selectedDay && trainingsOnSelectedDay.length === 0" class="text-sm text-gray-400 text-center">
-    Geen trainingen op {{ selectedDay }} {{ monthNames[currentMonth] }}.
-  </div>
-
+      @if (trainingsOnSelectedDay.length === 0) {
+        <p class="card text-center text-sm text-app-muted">Geen trainingen op deze dag.</p>
+      } @else {
+        @for (t of trainingsOnSelectedDay; track t.id) {
+          <button
+            type="button"
+            (click)="goToTraining(t.id)"
+            [class]="'list-row w-full text-left ' + disciplineColors[t.discipline]"
+          >
+            <span class="text-2xl" aria-hidden="true">{{ disciplineIcons[t.discipline] }}</span>
+            <span class="min-w-0 flex-1">
+              <p class="truncate font-semibold">{{ t.title }}</p>
+              <p class="truncate text-sm opacity-80">
+                {{ t.startTime }} · {{ t.duration }} min
+                @if (t.distance) {
+                  · {{ t.distance }} km
+                }
+              </p>
+            </span>
+            <span class="text-app-muted">›</span>
+          </button>
+        }
+      }
+    </section>
+  }
 </div>

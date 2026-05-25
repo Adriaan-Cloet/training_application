@@ -7,7 +7,8 @@ Doelrace: Knokke-Heist 2027.
 
 - Angular 21
 - Tailwind CSS v4
-- localStorage (later: ASP.NET Core + PostgreSQL)
+- Supabase (auth + database)
+- PWA (mobiel-first, standalone)
 
 ## Setup
 

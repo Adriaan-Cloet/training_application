@@ -1,68 +1,64 @@
-<div class="max-w-3xl mx-auto space-y-6">
+<div class="page">
+  <header class="mb-5">
+    <p class="section-title">Analyse</p>
+    <h1 class="text-2xl font-bold text-app-text">Statistieken</h1>
+  </header>
 
-  <!-- Terug -->
-  <div>
-    <button (click)="goBack()" class="text-sm text-blue-600 hover:underline">← Terug</button>
-  </div>
-
-  <div class="bg-white rounded-2xl shadow p-6 space-y-6">
-    <h2 class="text-xl font-bold text-gray-800">Statistieken</h2>
-
-    <!-- Periode filter -->
-    <div class="flex flex-wrap gap-2">
-      <button
-        *ngFor="let p of periodes"
-        (click)="setPeriode(p.value)"
-        [class]="'px-3 py-1 rounded-full text-sm font-medium transition ' +
-          (periode === p.value ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200')"
-      >
-        {{ p.label }}
-      </button>
+  <div class="card space-y-5">
+    <div>
+      <p class="section-title mb-2">Periode</p>
+      <div class="flex flex-wrap gap-2">
+        @for (p of periodes; track p.value) {
+          <button
+            type="button"
+            (click)="setPeriode(p.value)"
+            [class]="'chip ' + (periode === p.value ? 'chip--active' : '')"
+          >
+            {{ p.label }}
+          </button>
+        }
+      </div>
     </div>
 
-    <!-- Eenheid filter -->
-    <div class="flex gap-2">
-      <button
-        (click)="setEenheid('minuten')"
-        [class]="'px-3 py-1 rounded-full text-sm font-medium transition ' +
-          (eenheid === 'minuten' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200')"
-      >
-        Minuten
-      </button>
-      <button
-        (click)="setEenheid('kilometers')"
-        [class]="'px-3 py-1 rounded-full text-sm font-medium transition ' +
-          (eenheid === 'kilometers' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200')"
-      >
-        Kilometers
-      </button>
+    <div>
+      <p class="section-title mb-2">Eenheid</p>
+      <div class="flex gap-2">
+        <button
+          type="button"
+          (click)="setEenheid('minuten')"
+          [class]="'chip flex-1 ' + (eenheid === 'minuten' ? 'chip--active' : '')"
+        >
+          Minuten
+        </button>
+        <button
+          type="button"
+          (click)="setEenheid('kilometers')"
+          [class]="'chip flex-1 ' + (eenheid === 'kilometers' ? 'chip--active' : '')"
+        >
+          Kilometers
+        </button>
+      </div>
     </div>
 
-    <!-- Krachttraining toggle -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center justify-between gap-3">
       <button
+        type="button"
         (click)="toggleKracht()"
-        [class]="'px-3 py-1 rounded-full text-sm font-medium transition ' +
-          (krachttrainingIncluded ? 'bg-yellow-400 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200')"
+        [class]="'chip ' + (krachttrainingIncluded ? 'chip--active' : '')"
       >
-        🏋️ Krachttraining
+        Krachttraining
       </button>
-      <span class="text-xs text-gray-400">{{ krachttrainingIncluded ? 'Inbegrepen' : 'Uitgesloten' }}</span>
+      <span class="text-xs text-app-muted">
+        {{ krachttrainingIncluded ? 'Inbegrepen' : 'Uitgesloten' }}
+      </span>
     </div>
 
-    <!-- Grafiek -->
-    <div *ngIf="chartData.datasets.length > 0">
-      <canvas baseChart
-              [data]="chartData"
-              [options]="chartOptions"
-              type="bar">
-      </canvas>
-    </div>
-
-    <!-- Geen data -->
-    <div *ngIf="chartData.datasets.length === 0 || chartData.labels?.length === 0" class="text-sm text-gray-400 text-center py-8">
-      Geen trainingen gevonden voor deze periode.
-    </div>
-
+    @if (chartData.datasets.length > 0 && chartData.labels && chartData.labels.length > 0) {
+      <div class="h-56 w-full">
+        <canvas baseChart [data]="chartData" [options]="chartOptions" type="bar"></canvas>
+      </div>
+    } @else {
+      <p class="py-10 text-center text-sm text-app-muted">Geen trainingen voor deze periode.</p>
+    }
   </div>
 </div>

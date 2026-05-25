@@ -1,35 +1,40 @@
 @if (settings?.countdownEnabled) {
-  <div class="bg-white rounded-xl shadow p-5 space-y-4">
+  <div class="card-elevated overflow-hidden">
     @if (!settings?.raceDate || !settings?.raceName) {
-      <p class="text-sm text-gray-500">
-        Nog geen race ingesteld.
-        <a routerLink="/instellingen" class="text-blue-600 hover:underline">Stel je doelrace in</a>.
+      <p class="text-sm text-app-muted">
+        Stel je doelrace in via
+        <a routerLink="/instellingen" class="font-semibold text-app-accent">Instellingen</a>.
       </p>
     } @else if (!countdown) {
-      <p class="text-sm text-gray-500">Je race is al geweest. Goed gedaan! 🎉</p>
+      <p class="text-sm text-app-muted">Je race is al geweest. Goed gedaan!</p>
     } @else {
-      <div class="flex items-center justify-between">
+      <p class="section-title mb-1">Doelrace</p>
+      <h2 class="mb-4 text-xl font-bold leading-tight">{{ settings?.raceName }}</h2>
+
+      <div class="mb-5 flex items-end justify-between gap-4">
         <div>
-          <p class="text-xs text-gray-400 uppercase tracking-wide">Doelrace</p>
-          <h2 class="text-lg font-bold text-gray-800">{{ settings?.raceName }}</h2>
-        </div>
-        <div class="text-right">
-          <p class="text-3xl font-extrabold text-blue-600">
-            {{ countdown.weeks }}<span class="text-lg font-semibold text-gray-500">w</span>
-            {{ countdown.days }}<span class="text-lg font-semibold text-gray-500">d</span>
+          <p class="text-4xl font-extrabold tabular-nums text-app-accent">
+            {{ countdown.weeks }}<span class="text-xl font-bold text-app-muted">w</span>
+            {{ countdown.days }}<span class="text-xl font-bold text-app-muted">d</span>
           </p>
-          <p class="text-xs text-gray-400">nog {{ countdown.totalDays }} dagen</p>
+          <p class="mt-1 text-xs text-app-muted">nog {{ countdown.totalDays }} dagen</p>
+        </div>
+        <div
+          class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-app-accent/10 text-3xl"
+          aria-hidden="true"
+        >
+          🏁
         </div>
       </div>
 
-      <div class="space-y-1">
-        <div class="flex justify-between text-xs text-gray-400">
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs text-app-muted">
           <span>Voorbereiding</span>
-          <span>{{ progressPercent }}%</span>
+          <span class="font-semibold text-app-text">{{ progressPercent }}%</span>
         </div>
-        <div class="w-full bg-gray-100 rounded-full h-2.5">
+        <div class="h-2.5 w-full overflow-hidden rounded-full bg-app-bg">
           <div
-            class="bg-blue-600 h-2.5 rounded-full transition-all"
+            class="h-full rounded-full bg-gradient-to-r from-app-accent to-cyan-300 transition-all duration-500"
             [style.width.%]="progressPercent"
           ></div>
         </div>

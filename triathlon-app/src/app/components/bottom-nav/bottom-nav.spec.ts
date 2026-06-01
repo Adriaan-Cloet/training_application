@@ -44,6 +44,14 @@ describe('BottomNavComponent', () => {
     return { homeLink, calendarLink, statsLink, settingsLink };
   }
 
+  it('should render svg icons instead of text emoji in each nav link', () => {
+    fixture.detectChanges();
+    const svgs = (fixture.nativeElement as HTMLElement).querySelectorAll('nav a svg');
+    expect(svgs.length).toBe(4);
+    const emojiSpans = (fixture.nativeElement as HTMLElement).querySelectorAll('nav a span.text-xl');
+    expect(emojiSpans.length).toBe(0);
+  });
+
   it('should only show the active indicator on the current route', async () => {
     await navigateAndDetect('/');
     const homeState = getNavLinks();

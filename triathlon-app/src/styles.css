@@ -19,6 +19,17 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  html.light {
+    --color-app-bg: #f0f4f8;
+    --color-app-surface: #ffffff;
+    --color-app-surface-elevated: #e8edf5;
+    --color-app-border: #cbd5e1;
+    --color-app-muted: #64748b;
+    --color-app-text: #0f172a;
+    --color-app-accent: #0284c7;
+    --color-app-accent-pressed: #0369a1;
+  }
+
   body {
     @apply bg-app-bg text-app-text font-sans antialiased;
     height: 100%;

@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
 import { RouterLink } from '@angular/router';
@@ -25,6 +25,15 @@ export class TrainingListComponent {
     [Discipline.Krachttraining]: 'bg-amber-400/15 text-amber-300',
   };
 
+  readonly disciplineBorderStyle: Record<string, string> = {
+    [Discipline.Zwemmen]:        'border-left: 3px solid #38bdf8',
+    [Discipline.Fietsen]:        'border-left: 3px solid #34d399',
+    [Discipline.Lopen]:          'border-left: 3px solid #fb7185',
+    [Discipline.Krachttraining]: 'border-left: 3px solid #fbbf24',
+  };
+
+  trainingToDelete = signal<string | null>(null);
+
   trainings = computed(() =>
     this.trainingService
       .trainings()()
@@ -42,10 +51,20 @@ export class TrainingListComponent {
     });
   }
 
-  async delete(id: string, event: Event) {
+  delete(id: string, event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    if (!confirm('Deze training verwijderen?')) return;
+    this.trainingToDelete.set(id);
+  }
+
+  async confirmDelete() {
+    const id = this.trainingToDelete();
+    if (!id) return;
     await this.trainingService.delete(id);
+    this.trainingToDelete.set(null);
+  }
+
+  cancelDelete() {
+    this.trainingToDelete.set(null);
   }
 }

@@ -17,6 +17,7 @@ export class TrainingDetailComponent implements OnInit {
   isEditing = false;
   editData!: Omit<Training, 'id'>;
   disciplines = Object.values(Discipline);
+  readonly feelingOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   disciplineMeta: Record<Discipline, { icon: string; accent: string }> = {
     [Discipline.Zwemmen]: { icon: '🏊', accent: 'text-sky-300' },
@@ -53,6 +54,10 @@ export class TrainingDetailComponent implements OnInit {
 
   selectDiscipline(d: Discipline) {
     if (this.editData) this.editData.discipline = d;
+  }
+
+  setFeeling(value: number) {
+    if (this.editData) this.editData.feeling = value;
   }
 
   startEdit() {

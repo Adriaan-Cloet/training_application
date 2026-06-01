@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SettingsService } from '../../services/settings.service';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
 import { Router, RouterLink } from '@angular/router';
 import { RaceSettings } from '../../models/race-settings.model';
 
@@ -12,6 +13,7 @@ import { RaceSettings } from '../../models/race-settings.model';
   styleUrl: './settings.css',
 })
 export class Settings implements OnInit {
+  protected readonly themeService = inject(ThemeService);
   // Doelrace
   raceName = '';
   raceDate = '';

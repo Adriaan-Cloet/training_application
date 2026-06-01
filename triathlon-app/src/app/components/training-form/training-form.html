@@ -87,17 +87,19 @@
     </div>
   </div>
 
-  <div class="card">
-    <label class="field-label" for="feeling">Gevoel — {{ formData.feeling }}/10</label>
-    <input
-      id="feeling"
-      type="range"
-      name="feeling"
-      [(ngModel)]="formData.feeling"
-      min="1"
-      max="10"
-      class="mt-2 w-full accent-app-accent"
-    />
+  <div>
+    <span class="field-label">Gevoel</span>
+    <div class="mt-2 flex gap-1.5">
+      @for (n of feelingOptions; track n) {
+        <button
+          type="button"
+          (click)="setFeeling(n)"
+          [class]="n === formData.feeling
+            ? 'flex h-8 w-8 flex-1 items-center justify-center rounded-full bg-app-accent text-sm font-bold text-slate-950 transition active:scale-95'
+            : 'flex h-8 w-8 flex-1 items-center justify-center rounded-full border border-app-border bg-app-surface text-sm font-semibold text-app-muted transition active:scale-95'"
+        >{{ n }}</button>
+      }
+    </div>
   </div>
 
   <div>

@@ -52,6 +52,21 @@
   </section>
 
   <section class="mb-6 space-y-3">
+    <h2 class="section-title px-1">Weergave</h2>
+    <div class="card">
+      <label class="flex min-h-12 items-center gap-3 rounded-xl border border-app-border bg-app-bg px-4 cursor-pointer">
+        <input
+          type="checkbox"
+          [checked]="themeService.isDark()"
+          (change)="themeService.toggle()"
+          class="h-5 w-5 rounded accent-app-accent"
+        />
+        <span class="text-sm font-medium text-app-text">Donkere modus</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="mb-6 space-y-3">
     <h2 class="section-title px-1">Beveiliging</h2>
     <div class="card space-y-4">
       <div>

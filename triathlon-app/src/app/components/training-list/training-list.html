@@ -8,7 +8,7 @@
   <ul class="space-y-2">
     @for (training of trainings(); track training.id) {
       <li>
-        <a [routerLink]="['/training', training.id]" class="list-row">
+        <a [routerLink]="['/training', training.id]" class="list-row" [style]="disciplineBorderStyle[training.discipline]">
           <span
             [class]="
               'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-xl ' +
@@ -44,4 +44,30 @@
       </li>
     }
   </ul>
+}
+@if (trainingToDelete()) {
+  <div
+    class="fixed inset-0 z-50 bg-black/60"
+    (click)="cancelDelete()"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border-t border-app-border bg-app-surface p-6 space-y-4"
+    style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px))"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-dialog-title"
+  >
+    <div class="mx-auto h-1 w-10 rounded-full bg-app-border"></div>
+    <h3 id="delete-dialog-title" class="text-center text-lg font-bold text-app-text">Training verwijderen?</h3>
+    <p class="text-center text-sm text-app-muted">Dit kan niet ongedaan worden gemaakt.</p>
+    <button
+      type="button"
+      (click)="confirmDelete()"
+      class="flex min-h-12 w-full items-center justify-center rounded-xl bg-rose-600 px-4 text-base font-semibold text-white transition active:scale-[0.98]"
+    >
+      Verwijderen
+    </button>
+    <button type="button" (click)="cancelDelete()" class="btn-secondary">Annuleren</button>
+  </div>
 }

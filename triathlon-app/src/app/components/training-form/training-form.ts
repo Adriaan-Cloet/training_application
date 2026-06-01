@@ -15,6 +15,7 @@ export class TrainingFormComponent {
   saved = output<void>();
 
   disciplines = Object.values(Discipline);
+  readonly feelingOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   disciplineMeta: Record<
     Discipline,
@@ -59,6 +60,10 @@ export class TrainingFormComponent {
 
   selectDiscipline(d: Discipline) {
     this.formData.discipline = d;
+  }
+
+  setFeeling(value: number) {
+    this.formData.feeling = value;
   }
 
   async onSubmit() {

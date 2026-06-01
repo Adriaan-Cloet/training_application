@@ -47,6 +47,13 @@ export class CalendarComponent implements OnInit {
     krachttraining: 'border-amber-400/30 bg-amber-400/10 text-amber-200',
   };
 
+  disciplineBorderStyle: Record<string, string> = {
+    zwemmen:        'border-left: 3px solid #38bdf8',
+    fietsen:        'border-left: 3px solid #34d399',
+    lopen:          'border-left: 3px solid #fb7185',
+    krachttraining: 'border-left: 3px solid #fbbf24',
+  };
+
   disciplineIcons: Record<string, string> = {
     zwemmen: '🏊',
     lopen: '🏃',

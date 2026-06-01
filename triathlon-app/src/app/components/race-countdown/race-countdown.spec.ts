@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RaceCountdown } from './race-countdown';
+import { RaceCountdownComponent as RaceCountdown } from './race-countdown';
 
 describe('RaceCountdown', () => {
   let component: RaceCountdown;

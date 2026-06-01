@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
 import { RouterLink } from '@angular/router';
 import { Discipline } from '../../models/training.model';
+import { parseLocalDate } from '../../utils/date.utils';
 
 @Component({
   selector: 'app-training-list',
@@ -28,13 +29,13 @@ export class TrainingListComponent {
     this.trainingService
       .trainings()()
       .slice()
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+      .sort((a, b) => parseLocalDate(b.date).getTime() - parseLocalDate(a.date).getTime()),
   );
 
   constructor(private trainingService: TrainingService) {}
 
   formatDate(date: string): string {
-    return new Date(date).toLocaleDateString('nl-BE', {
+    return parseLocalDate(date).toLocaleDateString('nl-BE', {
       weekday: 'short',
       day: 'numeric',
       month: 'short',

@@ -16,7 +16,8 @@ export class SettingsService {
 
   private async getCurrentUserId(): Promise<string> {
     const { data } = await this.supabaseService.supabase.auth.getUser();
-    return data.user!.id;
+    if (!data.user) throw new Error('Niet ingelogd');
+    return data.user.id;
   }
 
   async load(): Promise<void> {

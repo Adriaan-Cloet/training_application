@@ -1,6 +1,7 @@
 import { Component, OnInit, computed } from '@angular/core';
 import { SettingsService } from '../../services/settings.service';
 import { RouterLink } from '@angular/router';
+import { parseLocalDate } from '../../utils/date.utils';
 
 @Component({
   selector: 'app-race-countdown',
@@ -12,7 +13,9 @@ export class RaceCountdownComponent implements OnInit {
   constructor(private settingsService: SettingsService) {}
 
   async ngOnInit() {
-    await this.settingsService.load();
+    if (!this.settingsService.settings()()) {
+      await this.settingsService.load();
+    }
   }
 
   get settings() {
@@ -24,8 +27,7 @@ export class RaceCountdownComponent implements OnInit {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const race = new Date(this.settings.raceDate);
-    race.setHours(0, 0, 0, 0);
+    const race = parseLocalDate(this.settings.raceDate);
 
     const diffMs = race.getTime() - today.getTime();
     if (diffMs < 0) return null;
@@ -40,8 +42,8 @@ export class RaceCountdownComponent implements OnInit {
   get progressPercent(): number {
     if (!this.settings?.trainingStartDate || !this.settings?.raceDate) return 0;
 
-    const start = new Date(this.settings.trainingStartDate);
-    const race = new Date(this.settings.raceDate);
+    const start = parseLocalDate(this.settings.trainingStartDate);
+    const race = parseLocalDate(this.settings.raceDate);
     const today = new Date();
 
     const totalMs = race.getTime() - start.getTime();

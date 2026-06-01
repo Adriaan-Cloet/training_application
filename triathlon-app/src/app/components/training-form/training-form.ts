@@ -62,6 +62,7 @@ export class TrainingFormComponent {
   }
 
   async onSubmit() {
+    if (this.trainingForm.invalid) return;
     const result = await this.trainingService.add({ ...this.formData });
     if (!result) return;
 

@@ -16,13 +16,16 @@ export class TrainingService {
 
   private async getCurrentUserId(): Promise<string> {
     const { data } = await this.supabaseService.supabase.auth.getUser();
-    return data.user!.id;
+    if (!data.user) throw new Error('Niet ingelogd');
+    return data.user.id;
   }
 
   async loadAll(): Promise<void> {
+    const userId = await this.getCurrentUserId();
     const { data, error } = await this.supabaseService.supabase
       .from('trainingen')
       .select('*')
+      .eq('user_id', userId)
       .order('date', { ascending: false });
 
     if (error) {
@@ -51,7 +54,12 @@ export class TrainingService {
   }
 
   async delete(id: string): Promise<void> {
-    const { error } = await this.supabaseService.supabase.from('trainingen').delete().eq('id', id);
+    const userId = await this.getCurrentUserId();
+    const { error } = await this.supabaseService.supabase
+      .from('trainingen')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', userId);
 
     if (error) {
       console.error('Fout bij het verwijderen van training:', error);

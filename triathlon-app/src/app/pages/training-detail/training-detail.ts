@@ -5,6 +5,7 @@ import { TrainingService } from '../../services/training.service';
 import { Discipline, Training } from '../../models/training.model';
 import { FormsModule } from '@angular/forms';
 import { PageHeaderComponent } from '../../components/page-header/page-header';
+import { parseLocalDate } from '../../utils/date.utils';
 
 @Component({
   selector: 'app-training-detail',
@@ -42,7 +43,7 @@ export class TrainingDetailComponent implements OnInit {
   }
 
   formatDate(date: string): string {
-    return new Date(date).toLocaleDateString('nl-BE', {
+    return parseLocalDate(date).toLocaleDateString('nl-BE', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',

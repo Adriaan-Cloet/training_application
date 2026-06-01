@@ -15,6 +15,8 @@ import {
 } from 'chart.js';
 import { TrainingService } from '../../services/training.service';
 import { Training, Discipline } from '../../models/training.model';
+import { parseLocalDate } from '../../utils/date.utils';
+import { sortChartLabels } from '../../utils/chart.utils';
 
 Chart.register(
   CategoryScale,
@@ -137,12 +139,12 @@ export class StatsComponent implements OnInit {
         return all;
     }
 
-    return all.filter((t: Training) => new Date(t.date) >= from);
+    return all.filter((t: Training) => parseLocalDate(t.date) >= from);
   }
 
   private buildChart() {
     const trainings = this.getFilteredTrainings();
-    const labels = this.getLabels();
+    const labels = this.getLabels(trainings);
     const activeDisciplines = this.krachttrainingIncluded
       ? this.disciplines
       : this.disciplines.filter((d) => d !== Discipline.Krachttraining);
@@ -171,14 +173,13 @@ export class StatsComponent implements OnInit {
       this.eenheid === 'minuten' ? 'Minuten' : 'Kilometers';
   }
 
-  private getLabels(): string[] {
-    const trainings = this.getFilteredTrainings();
+  private getLabels(trainings: Training[]): string[] {
     const labelSet = new Set(trainings.map((t) => this.getLabelForTraining(t)));
-    return Array.from(labelSet).sort();
+    return sortChartLabels(Array.from(labelSet));
   }
 
   private getLabelForTraining(t: Training): string {
-    const date = new Date(t.date);
+    const date = parseLocalDate(t.date);
     switch (this.periode) {
       case 'week':
         return date.toLocaleDateString('nl-BE', {

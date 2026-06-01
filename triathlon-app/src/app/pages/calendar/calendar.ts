@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Training } from '../../models/training.model';
 import { TrainingService } from '../../services/training.service';
+import { parseLocalDate } from '../../utils/date.utils';
 import { FlattenPipe } from '../../pipes/flatten-pipe';
 
 @Component({
@@ -70,7 +71,7 @@ export class CalendarComponent implements OnInit {
 
     const allTrainings = this.trainingService.trainings()();
     allTrainings.forEach((t: Training) => {
-      const date = new Date(t.date);
+      const date = parseLocalDate(t.date);
       if (date.getFullYear() === this.currentYear && date.getMonth() === this.currentMonth) {
         const day = date.getDate();
         if (!this.trainingsPerDay.has(day)) this.trainingsPerDay.set(day, []);
